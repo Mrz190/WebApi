@@ -5,7 +5,7 @@ namespace WebApiCourse6_7
     public class CitiesDataStore
     {
         public List<CitiesDTO> Cities { get; set; }
-        public static CitiesDataStore Current { get; set; } = new CitiesDataStore();
+        //public static CitiesDataStore Current { get; set; } = new CitiesDataStore();
 
         public CitiesDataStore()
         {

@@ -10,12 +10,14 @@ namespace WebApiCourse6_7.Controllers
     [ApiController]
     public class PointOfInterestController : ControllerBase
     {
-        private readonly LocalMailService _mailService;
+        private readonly IlMailService _mailService;
         private readonly ILogger<PointOfInterestController> _logger;
-        public PointOfInterestController(ILogger<PointOfInterestController> logger, LocalMailService mailService)
+        private readonly CitiesDataStore _citiesDataStore;
+        public PointOfInterestController(ILogger<PointOfInterestController> logger, IlMailService mailService, CitiesDataStore citiesDataStore)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mailService = mailService;
+            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
+            _citiesDataStore = citiesDataStore ?? throw new ArgumentNullException(nameof(citiesDataStore));
         }
 
         [HttpGet]
@@ -25,7 +27,7 @@ namespace WebApiCourse6_7.Controllers
             {
                 //throw new Exception("Sample Error");
                 
-                var city = CitiesDataStore.Current.Cities.FirstOrDefault(x => x.CityId == cityId);
+                var city = _citiesDataStore.Cities.FirstOrDefault(x => x.CityId == cityId);
                 if (city == null)
                 {
                     _logger.LogInformation($"No city with id: {cityId}");
@@ -44,7 +46,7 @@ namespace WebApiCourse6_7.Controllers
         [HttpGet("{pointOfInterestid}", Name="GetPointOfInterest")]
         public ActionResult<PointOFInterestDTO> GetPointOfInterest(int cityId, int pointOfInterestid)
         {
-            var findCity = CitiesDataStore.Current.Cities.FirstOrDefault(x => x.CityId == cityId);
+            var findCity = _citiesDataStore.Cities.FirstOrDefault(x => x.CityId == cityId);
             var pointOfInsterest = findCity.PointOfInterests.FirstOrDefault(x => x.PointId == pointOfInterestid);
 
             if (findCity != null)
@@ -75,14 +77,14 @@ namespace WebApiCourse6_7.Controllers
             //    return BadRequest("Invalid data.");
             //}
 
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(x => x.CityId == cityId);
+            var city = _citiesDataStore.Cities.FirstOrDefault(x => x.CityId == cityId);
 
             if (city == null)
             {
                 return NotFound($"No city with id: {cityId}");
             }
 
-            var maxPointId = CitiesDataStore.Current.Cities.SelectMany(x => x.PointOfInterests).Max(i => i.PointId);
+            var maxPointId = _citiesDataStore.Cities.SelectMany(x => x.PointOfInterests).Max(i => i.PointId);
             
             var finalPoint = new PointOFInterestDTO()
             {
@@ -110,7 +112,7 @@ namespace WebApiCourse6_7.Controllers
         public ActionResult UpdatePointOfInterest(int cityId, int pointid, PointOfInterestForUpdatingDTO pointOfInterest)
         {
 
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(x => x.CityId == cityId);
+            var city = _citiesDataStore.Cities.FirstOrDefault(x => x.CityId == cityId);
 
             if(city == null)
             {

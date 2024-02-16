@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using WebApiCourse6_7;
 using WebApiCourse6_7.Services;
 
 
@@ -23,7 +24,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
-builder.Services.AddTransient<LocalMailService>();
+# if DEBUG
+builder.Services.AddTransient<IlMailService, LocalMailService>();
+#else
+builder.Services.AddTransient<IlMailService, CloudMailService>();
+#endif
+
+builder.Services.AddSingleton<CitiesDataStore>();
 
 var app = builder.Build();
 
