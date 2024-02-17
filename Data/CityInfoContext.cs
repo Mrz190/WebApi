@@ -1,6 +1,9 @@
-﻿namespace WebApiCourse6_7.Data
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace WebApiCourse6_7.Data
 {
-    public class CityInfoContext
+    public class CityInfoContext : DbContext
     {
+
     }
 }
