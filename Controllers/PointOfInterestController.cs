@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebApiCourse6_7.Models;
-using WebApiCourse6_7.Services;
 
 namespace WebApiCourse6_7.Controllers
 {
@@ -10,15 +9,8 @@ namespace WebApiCourse6_7.Controllers
     [ApiController]
     public class PointOfInterestController : ControllerBase
     {
-        private readonly IlMailService _mailService;
         private readonly ILogger<PointOfInterestController> _logger;
         private readonly CitiesDataStore _citiesDataStore;
-        public PointOfInterestController(ILogger<PointOfInterestController> logger, IlMailService mailService, CitiesDataStore citiesDataStore)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mailService = mailService ?? throw new ArgumentNullException(nameof(mailService));
-            _citiesDataStore = citiesDataStore ?? throw new ArgumentNullException(nameof(citiesDataStore));
-        }
 
         [HttpGet]
         public ActionResult<IEnumerable<PointOFInterestDTO>> GetPointsOfInterest(int cityId)
@@ -95,7 +87,6 @@ namespace WebApiCourse6_7.Controllers
 
             city.PointOfInterests.Add(finalPoint);
 
-            _mailService.Send($"New point of interest created.", $"Created point with name: {pointOfInterest.PointName}");
 
             return CreatedAtRoute("GetPointOfInterest", 
                 new
@@ -132,35 +123,5 @@ namespace WebApiCourse6_7.Controllers
 
             return NoContent();
         }
-
-
-
-        //[HttpPatch("{pointid}")]
-        //public ActionResult PartiallyUpdatePoinrOfInterest(int cityId, int pointOfInterestId, JsonPatchDocument<PointOfInterestForUpdatingDTO> patchDocument)
-        //{
-        //    var city = CitiesDataStore.Current.Cities.FirstOrDefault(x =>  x.CityId == cityId);
-
-        //    if(city == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var pointOfInterestFromStore = city.PointOfInterests.FirstOrDefault(c => c.PointId == pointOfInterestId);
-        //    if(pointOfInterestFromStore == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var pointOfInterestPatch =
-        //        new PointOfInterestForUpdatingDTO()
-        //        {
-        //            PointName = pointOfInterestFromStore.PointName,
-        //            PointDescription = pointOfInterestFromStore.PointDescription,
-        //        };
-
-
-            
-        //    return Ok();
-        //}
     }
 }

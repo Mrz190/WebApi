@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiCourse6_7.Data;
 
@@ -10,9 +11,11 @@ using WebApiCourse6_7.Data;
 namespace WebApiCourse6_7.Migrations
 {
     [DbContext(typeof(CityInfoContext))]
-    partial class CityInfoContextModelSnapshot : ModelSnapshot
+    [Migration("20240220203112_Updater")]
+    partial class Updater
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,20 +44,6 @@ namespace WebApiCourse6_7.Migrations
                     b.HasKey("CityId");
 
                     b.ToTable("Cities");
-
-                    b.HasData(
-                        new
-                        {
-                            CityId = 1,
-                            CityDescription = "Great Business City",
-                            CityName = "Moscow"
-                        },
-                        new
-                        {
-                            CityId = 2,
-                            CityDescription = "Live City",
-                            CityName = "NewYork"
-                        });
                 });
 
             modelBuilder.Entity("WebApiCourse6_7.Entities.PointOfInterest", b =>
@@ -82,26 +71,6 @@ namespace WebApiCourse6_7.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("PointOfInterests");
-
-                    b.HasData(
-                        new
-                        {
-                            PointId = 1,
-                            CityId = 1,
-                            PointName = "Moscow City"
-                        },
-                        new
-                        {
-                            PointId = 2,
-                            CityId = 1,
-                            PointName = "Kreml"
-                        },
-                        new
-                        {
-                            PointId = 3,
-                            CityId = 2,
-                            PointName = "Central Park"
-                        });
                 });
 
             modelBuilder.Entity("WebApiCourse6_7.Entities.PointOfInterest", b =>

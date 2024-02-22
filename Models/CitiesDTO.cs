@@ -7,10 +7,7 @@
         public string? CityDescription { get; set; }
         public int numberPointOfInterest
         {
-            get
-            {
-                return PointOfInterests.Count;
-            }
+            get => PointOfInterests.Count;
         }
 
         public ICollection<PointOFInterestDTO> PointOfInterests { get; set; } = new List<PointOFInterestDTO>();
