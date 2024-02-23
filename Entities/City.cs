@@ -14,7 +14,6 @@ namespace WebApiCourse6_7.Entities
         [MaxLength(50)]
         public string? CityName { get; set; }
 
-        [MaxLength(200)]
         public string? CityDescription { get; set; }
 
         public ICollection<PointOfInterest> PointsOfInterest { get; set; }

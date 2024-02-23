@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Text.Json;
 using WebApiCourse6_7;
 using WebApiCourse6_7.Data;
+using WebApiCourse6_7.Entities;
 
 
 // logging to file
