@@ -12,7 +12,7 @@ using WebApiCourse6_7.Data;
 namespace WebApiCourse6_7.Migrations
 {
     [DbContext(typeof(CityInfoContext))]
-    [Migration("20240224211045_SeedData")]
+    [Migration("20240224212524_SeedData")]
     partial class SeedData
     {
         /// <inheritdoc />
@@ -194,10 +194,6 @@ namespace WebApiCourse6_7.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("NickName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -225,6 +221,9 @@ namespace WebApiCourse6_7.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("UserPhotoPhotoId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("WasCreated")
                         .HasColumnType("datetime2");
 
@@ -237,6 +236,8 @@ namespace WebApiCourse6_7.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserPhotoPhotoId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -322,6 +323,23 @@ namespace WebApiCourse6_7.Migrations
                             CityDescription = "Fugiat est ad magna ipsum. Officia veniam minim mollit ipsum voluptate ipsum ea aliquip labore adipisicing duis aute non. Excepteur consectetur quis fugiat incididunt cupidatat culpa ut est commodo non qui sit amet. Adipisicing commodo velit Lorem laboris adipisicing. Consequat ea fugiat enim nulla eiusmod non laboris duis aliquip ea. Cupidatat adipisicing esse aute Lorem est nisi ipsum ut ad consectetur incididunt sunt sint. Enim tempor culpa incididunt consequat Lorem cupidatat irure est ipsum.\r\n",
                             CityName = "Sawyer"
                         });
+                });
+
+            modelBuilder.Entity("WebApiCourse6_7.Entities.Photo", b =>
+                {
+                    b.Property<int>("PhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PhotoId"));
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PhotoId");
+
+                    b.ToTable("Photo");
                 });
 
             modelBuilder.Entity("WebApiCourse6_7.Entities.PointOfInterest", b =>
@@ -436,6 +454,17 @@ namespace WebApiCourse6_7.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApiCourse6_7.Entities.AppUser", b =>
+                {
+                    b.HasOne("WebApiCourse6_7.Entities.Photo", "UserPhoto")
+                        .WithMany()
+                        .HasForeignKey("UserPhotoPhotoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserPhoto");
                 });
 
             modelBuilder.Entity("WebApiCourse6_7.Entities.PointOfInterest", b =>
