@@ -6,11 +6,6 @@ namespace WebApiCourse6_7.Data
 {
     public class CityInfoContext : DbContext
     {
-        public CityInfoContext()
-        {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
-        }
         public CityInfoContext(DbContextOptions<CityInfoContext> options) : base(options)
         {
         }
@@ -21,16 +16,14 @@ namespace WebApiCourse6_7.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            var jsonCities = File.ReadAllText("Data/SeedCity.json");
+            var json_City = File.ReadAllText("Data/SeedCity.json");
 
-            var cities = JsonSerializer.Deserialize<List<City>>(jsonCities);
+            var city_data = JsonSerializer.Deserialize<List<City>>(json_City);
 
-
-            foreach (var city in cities)
+            foreach(var user in city_data)
             {
-                modelBuilder.Entity<City>().HasData(city);
+                modelBuilder.Entity<City>().HasData(user);
             }
-
 
 
             var jsonPoints = File.ReadAllText("Data/SeedPoints.json");

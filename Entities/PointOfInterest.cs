@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebApiCourse6_7.Entities;
 
 namespace WebApiCourse6_7.Entities
 {
