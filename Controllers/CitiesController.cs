@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using WebApiCourse6_7.Interfaces;
 using WebApiCourse6_7.Models;
 
 namespace WebApiCourse6_7.Controllers
@@ -8,32 +10,29 @@ namespace WebApiCourse6_7.Controllers
     public class CitiesController : ControllerBase
     {
         private readonly ILogger<CitiesController> _logger;
-        private readonly CitiesDataStore _citiesDataStore;
-        public CitiesController(ILogger<CitiesController> logger, CitiesDataStore citiesDataStore)
+        private readonly ICityInterface _cityInterface;
+        private readonly IMapper _mapper;
+
+        public CitiesController(ILogger<CitiesController> logger, ICityInterface cityInterface, IMapper mapper)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _citiesDataStore = citiesDataStore ?? throw new ArgumentNullException(nameof(logger));
+            _cityInterface = cityInterface ?? throw new ArgumentNullException(nameof(cityInterface));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         [HttpGet]
-        public ActionResult<IEnumerable<CitiesDTO>> GetCities()
+        public async Task<ActionResult<IEnumerable<CitiesDTO>>> GetCities()
         {
-            var resultFind = _citiesDataStore.Cities;
-            if(resultFind != null)
-            {
-                return Ok(resultFind);
-            }
-            return NoContent();
+            var cityEnities = await _cityInterface.GetCitiesAsync();
+
+            return Ok(_mapper.Map<IEnumerable<CityDTOwithoutPoints>>(cityEnities));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CitiesDTO> GetCity(int id)
+        public async Task<ActionResult<CitiesDTO>> GetCity(int id)
         {
-            var ResultFind = _citiesDataStore.Cities.FirstOrDefault(x => x.CityId == id);
-
-            if(ResultFind != null) { 
-                return Ok(ResultFind);
-            }
-            return NotFound();
+            return Ok();
+            //var cityToReturn = await _cityInterface.GetCityAsync(id);
+            //return await Ok(cityToReturn);
         }
     }
 }
