@@ -7,8 +7,8 @@ namespace WebApiCourse6_7.Services
 {
     public class CityInfoRepository : ICityInterface
     {
-        private CityInfoContext _context;
-        public CityInfoRepository(CityInfoContext context)
+        private DataContext _context;
+        public CityInfoRepository(DataContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

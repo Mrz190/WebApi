@@ -10,7 +10,7 @@ using WebApiCourse6_7.Data;
 
 namespace WebApiCourse6_7.Migrations
 {
-    [DbContext(typeof(CityInfoContext))]
+    [DbContext(typeof(DataContext))]
     partial class CityInfoContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

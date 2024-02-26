@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Identity;
 
 namespace WebApiCourse6_7.Data
 {
-    public class CityInfoContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
+    public class DataContext : IdentityDbContext<AppUser, IdentityRole<int>, int>
     {
-        public CityInfoContext()
+        public DataContext()
         {
             Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 
-        public CityInfoContext(DbContextOptions<CityInfoContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
         

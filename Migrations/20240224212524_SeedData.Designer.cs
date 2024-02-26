@@ -11,7 +11,7 @@ using WebApiCourse6_7.Data;
 
 namespace WebApiCourse6_7.Migrations
 {
-    [DbContext(typeof(CityInfoContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20240224212524_SeedData")]
     partial class SeedData
     {
