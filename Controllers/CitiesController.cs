@@ -6,7 +6,7 @@ using WebApiCourse6_7.Models;
 namespace WebApiCourse6_7.Controllers
 {
     [ApiController]
-    [Route("api/cities")]
+    [Route("cities")]
     public class CitiesController : ControllerBase
     {
         private readonly ILogger<CitiesController> _logger;
@@ -15,9 +15,9 @@ namespace WebApiCourse6_7.Controllers
 
         public CitiesController(ILogger<CitiesController> logger, ICityInterface cityInterface, IMapper mapper)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _cityInterface = cityInterface ?? throw new ArgumentNullException(nameof(cityInterface));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger;
+            _cityInterface = cityInterface;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CitiesDTO>>> GetCities()
@@ -27,12 +27,24 @@ namespace WebApiCourse6_7.Controllers
             return Ok(_mapper.Map<IEnumerable<CityDTOwithoutPoints>>(cityEnities));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CitiesDTO>> GetCity(int id)
+        [HttpGet("{cityId}")]
+        public async Task<ActionResult<CitiesDTO>> GetCity(int cityId, bool includepointOfInterests = false)
         {
-            return Ok();
-            //var cityToReturn = await _cityInterface.GetCityAsync(id);
-            //return await Ok(cityToReturn);
+            var city = await _cityInterface.GetCityAsync(cityId, includepointOfInterests);
+
+            if(city == null)
+            {
+                return NotFound($"No city with id: {cityId}");
+            }
+
+            if(includepointOfInterests)
+            {
+                var result = _mapper.Map<CitiesDTO>(city);
+                return Ok(result);
+            }
+
+
+            return BadRequest();
         }
     }
 }

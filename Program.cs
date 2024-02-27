@@ -27,9 +27,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
-
-
-
 builder.Services.AddSingleton<CitiesDataStore>();
 
 builder.Services.AddDbContext<DataContext>(options =>

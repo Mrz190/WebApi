@@ -10,7 +10,7 @@ namespace WebApiCourse6_7.Services
         private DataContext _context;
         public CityInfoRepository(DataContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context;
         }
         public void Dispose()
         {
@@ -21,13 +21,12 @@ namespace WebApiCourse6_7.Services
             return await _context.Cities.OrderBy(c => c.CityName).ToListAsync();
         }
 
-        public async Task<City>? GetCityAsync(int cityId, bool includepointOfInterests)
+        public async Task<City> GetCityAsync(int cityId, bool includepointOfInterests)
         {
-            if(includepointOfInterests)
-            {
-                return await _context.Cities.Include(p => p.PointsOfInterest).Where(i => i.CityId == cityId).FirstOrDefaultAsync();
-            }
-            return await _context.Cities.Where(i => i.CityId == cityId).FirstOrDefaultAsync();
+            var city = await _context.Cities.Include(p => p.PointsOfInterest).Where(i => i.CityId == cityId).FirstOrDefaultAsync();
+            return city;
+            //var result = await _context.Cities.Where(i => i.CityId == cityId).FirstOrDefaultAsync();
+            //return result;
         }
 
         public async Task<PointOfInterest> GetPointOfInterestAsync(int cityId, int pointId)

@@ -12,9 +12,9 @@ namespace WebApiCourse6_7.Entities
 
         [Required]
         [MaxLength(50)]
-        public string? CityName { get; set; }
+        public string CityName { get; set; }
 
-        public string? CityDescription { get; set; }
+        public string CityDescription { get; set; }
 
         public ICollection<PointOfInterest> PointsOfInterest { get; set; }
                = new List<PointOfInterest>();
