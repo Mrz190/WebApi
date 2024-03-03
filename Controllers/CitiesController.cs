@@ -5,8 +5,8 @@ using WebApiCourse6_7.Models;
 
 namespace WebApiCourse6_7.Controllers
 {
-    [ApiController]
     [Route("cities")]
+    [ApiController]
     public class CitiesController : ControllerBase
     {
         private readonly ILogger<CitiesController> _logger;
@@ -42,7 +42,6 @@ namespace WebApiCourse6_7.Controllers
                 var result = _mapper.Map<CitiesDTO>(city);
                 return Ok(result);
             }
-
 
             return BadRequest();
         }

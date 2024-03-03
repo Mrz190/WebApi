@@ -12,9 +12,6 @@ namespace WebApiCourse6_7.Services
         {
             _context = context;
         }
-        public void Dispose()
-        {
-        }
 
         public async Task<IEnumerable<City>> GetCitiesAsync()
         {
@@ -29,14 +26,25 @@ namespace WebApiCourse6_7.Services
             //return result;
         }
 
+        public async Task<bool> CityExist(int cityid)
+        {
+            return await _context.Cities.AnyAsync(c => c.CityId == cityid);
+        }
+
         public async Task<PointOfInterest> GetPointOfInterestAsync(int cityId, int pointId)
         {
-            return await _context.PointOfInterests.Where(i => i.CityId == cityId && i.PointId == pointId).FirstOrDefaultAsync();
+            var point = await _context.PointOfInterests.Where(i => i.CityId == cityId && i.PointId == pointId).FirstOrDefaultAsync();
+            return (point);
         }
 
         public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestAsync(int cityId)
         {
             return await _context.PointOfInterests.Where(i => i.CityId == cityId).OrderBy(n => n.PointName).ToListAsync();
+        }
+
+        public async Task<IEnumerable<PointOfInterest>> GetAllPoints()
+        {
+            return await _context.PointOfInterests.ToListAsync();
         }
     }
 }

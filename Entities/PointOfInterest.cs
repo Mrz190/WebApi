@@ -11,13 +11,13 @@ namespace WebApiCourse6_7.Entities
 
         [Required]
         [MaxLength(50)]
-        public string? PointName { get; set; }
+        public string PointName { get; set; }
 
-        public string? PointDescription { get; set; }
+        public string PointDescription { get; set; }
 
 
         [ForeignKey("CityId")]
-        public City? City { get; set; }
+        public City City { get; set; }
         public int CityId { get; set; }
     }
 }

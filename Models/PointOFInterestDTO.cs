@@ -4,6 +4,6 @@
     {
         public int PointId { get; set; }
         public string PointName { get; set; } = string.Empty;
-        public string? PointDescription { get; set; }
+        public string PointDescription { get; set; }
     }
 }
