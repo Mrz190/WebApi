@@ -11,5 +11,7 @@ namespace WebApiCourse6_7.Interfaces
         Task<IEnumerable<PointOfInterest>> GetPointsOfInterestAsync(int cityId);
         Task<PointOfInterest> GetPointOfInterestAsync(int cityId, int pointId);
         Task<IEnumerable<PointOfInterest>> GetAllPoints();
+        Task AddPointOfInterestAsync(int cityId, PointOfInterest pointOfInterest);
+        Task<bool> SaveChangesAsync();
     }
 }

@@ -9,6 +9,6 @@ namespace WebApiCourse6_7.Models
         public string PointName { get; set; } = string.Empty;
 
         [MaxLength(200)]
-        public string? Pointdescription { get; set; }
+        public string Pointdescription { get; set; }
     }
 }

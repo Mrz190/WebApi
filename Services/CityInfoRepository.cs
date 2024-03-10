@@ -34,7 +34,7 @@ namespace WebApiCourse6_7.Services
         public async Task<PointOfInterest> GetPointOfInterestAsync(int cityId, int pointId)
         {
             var point = await _context.PointOfInterests.Where(i => i.CityId == cityId && i.PointId == pointId).FirstOrDefaultAsync();
-            return (point);
+            return point;
         }
 
         public async Task<IEnumerable<PointOfInterest>> GetPointsOfInterestAsync(int cityId)
@@ -45,6 +45,21 @@ namespace WebApiCourse6_7.Services
         public async Task<IEnumerable<PointOfInterest>> GetAllPoints()
         {
             return await _context.PointOfInterests.ToListAsync();
+        }
+
+        public async Task AddPointOfInterestAsync(int cityId, PointOfInterest pointOfInterest)
+        {
+            var city = await GetCityAsync(cityId, false);
+
+            if(city != null)
+            {
+                city.PointsOfInterest.Add(pointOfInterest);
+            }
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return (await _context.SaveChangesAsync() >= 0);
         }
     }
 }
