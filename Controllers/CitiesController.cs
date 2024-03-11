@@ -32,18 +32,29 @@ namespace WebApiCourse6_7.Controllers
         {
             var city = await _cityInterface.GetCityAsync(cityId, includepointOfInterests);
 
-            if(city == null)
+            if (city == null)
             {
                 return NotFound($"No city with id: {cityId}");
             }
 
-            if(includepointOfInterests)
+            if (includepointOfInterests)
             {
                 var result = _mapper.Map<CitiesDTO>(city);
                 return Ok(result);
             }
 
             return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CitiesDTO>> CreateCity(CitiesDtoForCreation city)
+        {
+            var finalCity = _mapper.Map<Entities.City>(city);
+
+            await _cityInterface.CreateCity(finalCity);
+            await _cityInterface.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

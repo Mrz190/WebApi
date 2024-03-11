@@ -7,8 +7,11 @@ namespace WebApiCourse6_7.Mapping
         public PointOfInterestProfile()
         {
             CreateMap<Entities.PointOfInterest, Models.PointOFInterestDTO>();
+
             CreateMap<Models.PointOfInterestForCreationDTO, Entities.PointOfInterest>();
+            
             CreateMap<Models.PointOfInterestForUpdatingDTO, Entities.PointOfInterest>();
+            
             CreateMap<Entities.PointOfInterest, Models.PointOfInterestForUpdatingDTO>();
         }
     }

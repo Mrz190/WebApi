@@ -22,8 +22,11 @@ namespace WebApiCourse6_7.Services
         {
             var city = await _context.Cities.Include(p => p.PointsOfInterest).Where(i => i.CityId == cityId).FirstOrDefaultAsync();
             return city;
-            //var result = await _context.Cities.Where(i => i.CityId == cityId).FirstOrDefaultAsync();
-            //return result;
+        }
+
+        public async Task CreateCity(City city)
+        {
+            _context.Add(city);
         }
 
         public async Task<bool> CityExist(int cityid)
@@ -55,6 +58,11 @@ namespace WebApiCourse6_7.Services
             {
                 city.PointsOfInterest.Add(pointOfInterest);
             }
+        }
+
+        public void DeletePointOfInterest(PointOfInterest pointOfInterest)
+        {
+            _context.PointOfInterests.Remove(pointOfInterest);
         }
 
         public async Task<bool> SaveChangesAsync()

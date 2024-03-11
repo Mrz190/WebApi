@@ -11,6 +11,7 @@ namespace WebApiCourse6_7.Mapping
             
             CreateMap<Entities.City, Models.CitiesDTO>()
                 .ForMember(dest => dest.PointOfInterests, opt => opt.MapFrom(src => src.PointsOfInterest.ToList()));
+            CreateMap<Models.CitiesDtoForCreation, Entities.City>();
         }
     }
 }

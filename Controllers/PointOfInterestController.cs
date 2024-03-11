@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using WebApiCourse6_7.Entities;
 using WebApiCourse6_7.Interfaces;
 using WebApiCourse6_7.Models;
 
@@ -128,10 +126,43 @@ namespace WebApiCourse6_7.Controllers
             return NotFound();
         }
 
-        [HttpDelete("{pointofinterestid}")]
-        public async Task<ActionResult> DeletePointOfInterest(int cityid, int pointid, PointOfInterest pointOfInterest)
+        [HttpPatch("{pointofinterestid}")]
+        public async Task<ActionResult> ParticalyUpdatePoint(int cityId, int pointid, JsonPatchDocument<PointOfInterestForUpdatingDTO> patchDocument)
         {
-            return Ok();
+            if (!await _cityInterface.CityExist(cityId)) return BadRequest();
+
+            var pointOfInterestEntity = await _cityInterface.GetPointsOfInterestAsync(cityId);
+
+            if(pointOfInterestEntity == null) return BadRequest();
+
+            var pointOfInterestToPatch = _mapper.Map<PointOfInterestForUpdatingDTO>(pointOfInterestEntity);
+
+            patchDocument.ApplyTo(pointOfInterestToPatch, ModelState);
+
+            if (!ModelState.IsValid) return BadRequest();
+
+            if(!TryValidateModel(pointOfInterestToPatch)) return BadRequest(ModelState);
+
+            _mapper.Map(pointOfInterestToPatch, pointOfInterestEntity);
+
+            await _cityInterface.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{pointofinterestid}")]
+        public async Task<ActionResult> DeletePointOfInterest(int cityid, int pointofinterestid)
+        {
+            if(!await _cityInterface.CityExist(cityid)) return BadRequest();
+
+            var pointOfInretestEntity = await _cityInterface.GetPointOfInterestAsync(cityid, pointofinterestid);
+
+            if(pointOfInretestEntity == null) return NotFound();
+
+            _cityInterface.DeletePointOfInterest(pointOfInretestEntity);
+            await _cityInterface.SaveChangesAsync();
+
+            return Ok("Point of interest was successfully deleted.");
         }
     }
 }
