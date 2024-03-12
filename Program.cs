@@ -4,6 +4,7 @@ using Serilog;
 using WebApiCourse6_7;
 using WebApiCourse6_7.Data;
 using WebApiCourse6_7.Interfaces;
+using WebApiCourse6_7.Migrations;
 using WebApiCourse6_7.Services;
 
 // logging to file
@@ -53,7 +54,22 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseAuthentication();
 
-
 app.MapControllers();
 
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+
+try
+{
+    var context = services.GetRequiredService<DataContext>();
+
+    await context.Database.MigrateAsync();
+    await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]");
+}
+catch (Exception ex)
+{
+    var logger = services.GetService<ILogger<Program>>();
+    logger.LogError(ex, "Incorrect migration");
+}
 app.Run();
