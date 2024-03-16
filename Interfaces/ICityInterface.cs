@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using WebApiCourse6_7.Entities;
+﻿using WebApiCourse6_7.Entities;
 
 namespace WebApiCourse6_7.Interfaces
 {
     public interface ICityInterface
     {
         Task<IEnumerable<City>> GetCitiesAsync();
-        Task<IEnumerable<City>> GetCitiesAsync(string? name);
+        Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery);
         Task<City> GetCityAsync(int cityId, bool includepointOfInterests);
         Task CreateCity(City city);
         Task<bool> CityExist(int cityid);

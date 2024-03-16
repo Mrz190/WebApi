@@ -18,17 +18,28 @@ namespace WebApiCourse6_7.Services
             return await _context.Cities.OrderBy(c => c.CityName).ToListAsync();
         }
 
-        public async Task<IEnumerable<City>> GetCitiesAsync(string? name)
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name, string? searchQuery)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name) && string.IsNullOrWhiteSpace(searchQuery))
             {
                 return await GetCitiesAsync();
             }
-            name = name.Trim();
-            return await _context.Cities
-                         .Where(c => c.CityName == name)
-                         .OrderBy(c => c.CityName)
-                         .ToListAsync();
+
+            var collection = _context.Cities as IQueryable<City>;
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                name = name.Trim();
+                collection = collection.Where(n => n.CityName == name);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(a => a.CityName.Contains(searchQuery));
+            }
+
+            return await collection.OrderBy(n => n.CityName).ToListAsync();
         }
 
         public async Task<City> GetCityAsync(int cityId, bool includepointOfInterests)
