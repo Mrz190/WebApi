@@ -20,9 +20,9 @@ namespace WebApiCourse6_7.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CitiesDTO>>> GetCities()
+        public async Task<ActionResult<IEnumerable<CitiesDTO>>> GetCities(string? name)
         {
-            var cityEnities = await _cityInterface.GetCitiesAsync();
+            var cityEnities = await _cityInterface.GetCitiesAsync(name);
 
             return Ok(_mapper.Map<IEnumerable<CityDTOwithoutPoints>>(cityEnities));
         }

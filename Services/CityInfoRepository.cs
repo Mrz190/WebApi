@@ -7,7 +7,7 @@ namespace WebApiCourse6_7.Services
 {
     public class CityInfoRepository : ICityInterface
     {
-        private DataContext _context;
+        private readonly DataContext _context;
         public CityInfoRepository(DataContext context)
         {
             _context = context;
@@ -16,6 +16,19 @@ namespace WebApiCourse6_7.Services
         public async Task<IEnumerable<City>> GetCitiesAsync()
         {
             return await _context.Cities.OrderBy(c => c.CityName).ToListAsync();
+        }
+
+        public async Task<IEnumerable<City>> GetCitiesAsync(string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return await GetCitiesAsync();
+            }
+            name = name.Trim();
+            return await _context.Cities
+                         .Where(c => c.CityName == name)
+                         .OrderBy(c => c.CityName)
+                         .ToListAsync();
         }
 
         public async Task<City> GetCityAsync(int cityId, bool includepointOfInterests)
@@ -49,15 +62,23 @@ namespace WebApiCourse6_7.Services
         {
             return await _context.PointOfInterests.ToListAsync();
         }
+        public async Task<IEnumerable<PointOfInterest>> GetAllPoints(string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return await GetAllPoints();
+            }
+            return await _context.PointOfInterests
+                                  .Where(n => n.PointName == name)
+                                  .OrderBy(n => n.PointName)
+                                  .ToListAsync();
+        }
 
         public async Task AddPointOfInterestAsync(int cityId, PointOfInterest pointOfInterest)
         {
             var city = await GetCityAsync(cityId, false);
 
-            if(city != null)
-            {
-                city.PointsOfInterest.Add(pointOfInterest);
-            }
+            if (city != null) city.PointsOfInterest.Add(pointOfInterest);
         }
 
         public void DeletePointOfInterest(PointOfInterest pointOfInterest)

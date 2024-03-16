@@ -18,7 +18,8 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 // need for logging
-builder.Host.UseSerilog();
+
+builder.Services.AddSerilog();
 
 // Add services to the container.
 
@@ -65,7 +66,6 @@ try
     var context = services.GetRequiredService<DataContext>();
 
     await context.Database.MigrateAsync();
-    await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE [Connections]");
 }
 catch (Exception ex)
 {

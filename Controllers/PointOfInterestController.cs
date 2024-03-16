@@ -22,9 +22,9 @@ namespace WebApiCourse6_7.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<PointOFInterestDTO>>> GetAllPointsOfInterest()
+        public async Task<ActionResult<IEnumerable<PointOFInterestDTO>>> GetAllPointsOfInterest(string? name)
         {
-            var points = await _cityInterface.GetAllPoints();
+            var points = await _cityInterface.GetAllPoints(name);
             var result = _mapper.Map<IEnumerable<PointOFInterestDTO>>(points);
             return Ok(result);
         }
@@ -89,7 +89,7 @@ namespace WebApiCourse6_7.Controllers
 
             var city = await _cityInterface.CityExist(cityId);
 
-            if (city == null)
+            if (!city)
             {
                 return NotFound($"No city with id: {cityId}");
             }
